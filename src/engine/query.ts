@@ -241,20 +241,21 @@ const savingsResolver: Resolver = {
   },
   build: (q, scope) => {
     const target = q.amount ?? 500_000;
-    const pool = opportunities
+    const chosen = opportunities
       .filter((o) => SAVINGS_CATEGORIES.includes(o.category))
       .filter((o) => !scope || o.company_id === scope || o.affected_company_ids.includes(scope))
       .sort((a, b) => b.impact - a.impact);
 
-    // Take enough opportunities to clear the target, then show the rest as upside.
-    const chosen: Opportunity[] = [];
-    let running = 0;
-    for (const o of pool) {
-      chosen.push(o);
-      running += o.impact;
-      if (running >= target && chosen.length >= 4) break;
+    const running = chosen.reduce((s, o) => s + o.impact, 0);
+
+    // How far down the list the user has to read to clear the target.
+    let toTarget = 0;
+    let accumulated = 0;
+    for (const o of chosen) {
+      toTarget += 1;
+      accumulated += o.impact;
+      if (accumulated >= target) break;
     }
-    const remainder = pool.filter((o) => !chosen.includes(o));
 
     const rows: Cell[][] = chosen.map((o) => [
       cell(o.title, { href: `/opportunities/${o.id}` }),
@@ -273,15 +274,21 @@ const savingsResolver: Resolver = {
         {
           kind: 'headline',
           text: `${moneyExact(running)} identified across ${chosen.length} areas.`,
-          sub: `Target was ${money(target)}. ${remainder.length > 0 ? `A further ${money(remainder.reduce((s, o) => s + o.impact, 0))} sits below the line.` : ''}`.trim(),
+          sub:
+            accumulated >= target
+              ? `The top ${toTarget} alone clear your ${money(target)} target. Everything below the line is additional.`
+              : `That is short of ${money(target)} — Company Brain will not pad the list to reach a number.`,
         },
         {
           kind: 'ledger',
           title: 'Where the money is',
-          items: chosen.map((o) => ({
+          items: chosen.map((o, i) => ({
             label: o.title,
             value: money(o.impact),
-            note: o.impact_note,
+            note:
+              i + 1 === toTarget
+                ? `${o.impact_note} — target cleared here`
+                : o.impact_note,
             evidence_id: o.evidence_ids[0],
           })),
           total: { label: 'Total annual', value: moneyExact(running) },
@@ -971,7 +978,9 @@ const compareResolver: Resolver = {
     if (q.mentions.length < 2) return 0;
     const n = hits(q.lower, 'compare', 'versus', ' vs', 'against', 'difference between', 'better');
     if (!n) return 0;
-    return 83 + n * 3;
+    // Naming two companies explicitly is a stronger signal than any keyword, so
+    // this outranks the portfolio-wide comparison resolver.
+    return 88 + q.mentions.length * 2 + n * 3;
   },
   build: (q) => {
     const [a, b] = q.mentions.map((id) => companyById[id]);
@@ -1105,7 +1114,18 @@ const companyBriefResolver: Resolver = {
   id: 'company-brief',
   score: (q, scope) => {
     const target = q.mentions[0] ?? scope;
-    return target ? 40 : 0;
+    if (!target) return 0;
+    // An explicit mention is a request for that company.
+    if (q.mentions.length === 1) return 40;
+    // Otherwise only answer when the question reads like a general status
+    // check on the company already in scope. Anything else falls through to the
+    // fallback, which says plainly that there is no grounded answer.
+    const general = hits(
+      q.lower,
+      'how is', 'how are', 'overview', 'brief', 'status', 'summary', 'tell me about', 'what about', 'how did',
+    );
+    const words = q.lower.trim().split(/\s+/).filter(Boolean).length;
+    return general || words <= 3 ? 30 : 0;
   },
   build: (q, scope) => {
     const c = companyById[q.mentions[0] ?? scope!];
