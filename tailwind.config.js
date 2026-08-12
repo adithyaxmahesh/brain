@@ -1,0 +1,68 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ['./index.html', './src/**/*.{ts,tsx}'],
+  theme: {
+    extend: {
+      colors: {
+        canvas: 'rgb(var(--cb-canvas) / <alpha-value>)',
+        paper: 'rgb(var(--cb-paper) / <alpha-value>)',
+        rail: 'rgb(var(--cb-rail) / <alpha-value>)',
+        line: 'rgb(var(--cb-line) / <alpha-value>)',
+        'line-strong': 'rgb(var(--cb-line-strong) / <alpha-value>)',
+        ink: 'rgb(var(--cb-ink) / <alpha-value>)',
+        'ink-2': 'rgb(var(--cb-ink-2) / <alpha-value>)',
+        muted: 'rgb(var(--cb-muted) / <alpha-value>)',
+        faint: 'rgb(var(--cb-faint) / <alpha-value>)',
+        accent: 'rgb(var(--cb-accent) / <alpha-value>)',
+        'accent-soft': 'rgb(var(--cb-accent-soft) / <alpha-value>)',
+        strong: 'rgb(var(--cb-strong) / <alpha-value>)',
+        watch: 'rgb(var(--cb-watch) / <alpha-value>)',
+        risk: 'rgb(var(--cb-risk) / <alpha-value>)',
+      },
+      fontFamily: {
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        mono: ['ui-monospace', 'SFMono-Regular', 'SF Mono', 'Menlo', 'Consolas', 'monospace'],
+        display: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+      },
+      fontSize: {
+        '2xs': ['10px', { lineHeight: '14px', letterSpacing: '0.08em' }],
+        xs: ['11.5px', { lineHeight: '16px' }],
+        sm: ['12.5px', { lineHeight: '18px' }],
+        base: ['13.5px', { lineHeight: '21px' }],
+        lg: ['15px', { lineHeight: '23px' }],
+        xl: ['18px', { lineHeight: '26px' }],
+        '2xl': ['22px', { lineHeight: '29px' }],
+        '3xl': ['28px', { lineHeight: '34px' }],
+        '4xl': ['34px', { lineHeight: '40px' }],
+        '5xl': ['44px', { lineHeight: '48px' }],
+      },
+      borderRadius: {
+        none: '0',
+        sm: '2px',
+        DEFAULT: '3px',
+        md: '4px',
+        lg: '6px',
+        xl: '8px',
+      },
+      boxShadow: {
+        subtle: '0 1px 2px rgb(20 18 15 / 0.04)',
+        pop: '0 1px 1px rgb(20 18 15 / 0.03), 0 8px 24px -8px rgb(20 18 15 / 0.14)',
+        drawer: '-12px 0 40px -12px rgb(20 18 15 / 0.18)',
+      },
+      transitionDuration: { DEFAULT: '140ms' },
+      keyframes: {
+        'fade-in': { from: { opacity: '0' }, to: { opacity: '1' } },
+        'rise': { from: { opacity: '0', transform: 'translateY(6px)' }, to: { opacity: '1', transform: 'none' } },
+        'slide-in': { from: { transform: 'translateX(16px)', opacity: '0' }, to: { transform: 'none', opacity: '1' } },
+        'pulse-dot': { '0%,100%': { opacity: '1' }, '50%': { opacity: '0.35' } },
+      },
+      animation: {
+        'fade-in': 'fade-in 160ms ease-out both',
+        rise: 'rise 180ms cubic-bezier(0.2,0.8,0.2,1) both',
+        'slide-in': 'slide-in 180ms cubic-bezier(0.2,0.8,0.2,1) both',
+        'pulse-dot': 'pulse-dot 1.8s ease-in-out infinite',
+      },
+    },
+  },
+  plugins: [],
+}

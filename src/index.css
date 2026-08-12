@@ -1,0 +1,164 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --cb-canvas: 250 249 247;
+    --cb-paper: 255 255 255;
+    --cb-rail: 245 243 240;
+    --cb-line: 231 227 222;
+    --cb-line-strong: 213 208 201;
+    --cb-ink: 25 24 22;
+    --cb-ink-2: 61 58 54;
+    --cb-muted: 118 113 105;
+    --cb-faint: 158 152 144;
+    --cb-accent: 43 82 122;
+    --cb-accent-soft: 236 240 245;
+    --cb-strong: 42 102 74;
+    --cb-watch: 148 101 24;
+    --cb-risk: 158 55 43;
+  }
+
+  * {
+    @apply border-line;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-canvas text-ink font-sans text-base antialiased;
+    font-feature-settings: 'cv05' 1, 'ss01' 1;
+  }
+
+  ::selection {
+    background: rgb(var(--cb-accent) / 0.16);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply text-ink;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  input,
+  textarea,
+  button {
+    font: inherit;
+    color: inherit;
+  }
+
+  input:focus,
+  textarea:focus,
+  button:focus {
+    outline: none;
+  }
+
+  [data-focus-ring]:focus-visible {
+    outline: 2px solid rgb(var(--cb-accent) / 0.45);
+    outline-offset: 1px;
+  }
+
+  /* Numbers should align in tables and metric rows. */
+  .tnum {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1;
+  }
+}
+
+@layer components {
+  /* Small uppercase section label — the main structural device of the UI. */
+  .eyebrow {
+    @apply text-2xs font-semibold uppercase tracking-[0.09em] text-faint;
+  }
+
+  .panel {
+    @apply border border-line bg-paper;
+  }
+
+  .hairline {
+    @apply border-t border-line;
+  }
+
+  /* Text link that reveals its underline on hover only. */
+  .link {
+    @apply text-ink underline decoration-line-strong decoration-1 underline-offset-[3px] transition-colors hover:decoration-ink;
+  }
+
+  .btn {
+    @apply inline-flex select-none items-center justify-center gap-1.5 whitespace-nowrap rounded border px-2.5 py-[5px] text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-40;
+  }
+
+  .btn-primary {
+    @apply btn border-ink bg-ink text-white hover:bg-ink-2;
+  }
+
+  .btn-default {
+    @apply btn border-line-strong bg-paper text-ink hover:bg-rail;
+  }
+
+  .btn-ghost {
+    @apply btn border-transparent bg-transparent text-muted hover:bg-rail hover:text-ink;
+  }
+
+  .btn-danger {
+    @apply btn border-line-strong bg-paper text-risk hover:bg-risk/5;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-sm border border-line bg-canvas px-1.5 py-px text-2xs font-medium uppercase tracking-[0.06em] text-muted;
+  }
+
+  .kbd {
+    @apply inline-flex h-[17px] min-w-[17px] items-center justify-center rounded-sm border border-line-strong bg-paper px-1 font-mono text-[10px] font-medium text-muted;
+  }
+
+  /* Dense institutional table. */
+  .grid-table {
+    @apply w-full border-collapse text-left;
+  }
+
+  .grid-table thead th {
+    @apply eyebrow border-b border-line px-3 py-2 font-semibold;
+  }
+
+  .grid-table tbody td {
+    @apply border-b border-line px-3 py-2.5 align-middle;
+  }
+
+  .grid-table tbody tr {
+    @apply transition-colors;
+  }
+
+  .row-hover {
+    @apply cursor-pointer hover:bg-rail/70;
+  }
+}
+
+/* Thin, unobtrusive scrollbars. */
+@layer utilities {
+  .scroll-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--cb-line-strong)) transparent;
+  }
+  .scroll-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scroll-thin::-webkit-scrollbar-thumb {
+    background: rgb(var(--cb-line-strong));
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  .scroll-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
