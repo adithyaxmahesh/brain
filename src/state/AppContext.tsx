@@ -68,6 +68,35 @@ const AppContext = createContext<AppState | null>(null);
 
 const ONBOARD_KEY = 'company-brain.onboarded';
 
+/**
+ * Storage access throws outright in sandboxed frames and in some private
+ * browsing modes, so onboarding state degrades to in-memory rather than taking
+ * the app down with it.
+ */
+const store = {
+  get(key: string): string | null {
+    try {
+      return window.localStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  },
+  set(key: string, value: string) {
+    try {
+      window.localStorage.setItem(key, value);
+    } catch {
+      /* Non-persistent session; the in-memory flag still holds for this visit. */
+    }
+  },
+  remove(key: string) {
+    try {
+      window.localStorage.removeItem(key);
+    } catch {
+      /* As above. */
+    }
+  },
+};
+
 export function AppProvider({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -78,7 +107,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [actionState, setActionState] = useState<Action[]>(seedActions);
   const [extraActivity, setExtraActivity] = useState<ActivityEvent[]>([]);
   const [onboarded, setOnboarded] = useState<boolean>(
-    () => typeof window !== 'undefined' && window.localStorage.getItem(ONBOARD_KEY) === '1',
+    () => typeof window !== 'undefined' && store.get(ONBOARD_KEY) === '1',
   );
 
   const user = useMemo(
@@ -165,12 +194,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
   );
 
   const completeOnboarding = useCallback(() => {
-    window.localStorage.setItem(ONBOARD_KEY, '1');
+    store.set(ONBOARD_KEY, '1');
     setOnboarded(true);
   }, []);
 
   const resetOnboarding = useCallback(() => {
-    window.localStorage.removeItem(ONBOARD_KEY);
+    store.remove(ONBOARD_KEY);
     setOnboarded(false);
   }, []);
 

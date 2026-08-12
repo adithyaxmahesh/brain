@@ -10,10 +10,14 @@ provide context, trust and control around the intelligence.
 
 ```bash
 npm install
-npm run dev        # http://localhost:5173
-npm run build      # typecheck + production bundle
+npm run dev            # http://localhost:5173
+npm run build          # typecheck + production bundle
+npm run build:preview  # one self-contained HTML file, no external requests
 npm run typecheck
 ```
+
+`build:preview` inlines the CSS and JS into a single page that routes on the
+hash, for hosting somewhere that serves one file and blocks external requests.
 
 Seeded with **Redwood Holdings** — five operating companies, $131.4M combined
 revenue, running on different accounting, ERP, CRM and support systems.
