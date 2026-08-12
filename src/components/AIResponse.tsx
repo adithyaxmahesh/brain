@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 import { useApp } from '@/state/AppContext';
 import type { AIResponse as AIResponseModel, Block, Cell, Finding, SuggestedAction } from '@/engine/types';
 import { Claim, EvidenceLink } from './Claim';
-import { SourceBadge, Tone } from './primitives';
+import { SourceBadge } from './primitives';
 
 /**
  * Renders a structured answer. Deliberately not a chat bubble: the output reads
@@ -492,9 +492,7 @@ export function ResponsePending({ query }: { query: string }) {
             className="flex items-center gap-2.5 text-sm text-faint"
             style={{ animation: `fade-in 200ms ease-out ${i * 130}ms both` }}
           >
-            <Tone tone="neutral">
-              <span className="block size-[5px] animate-pulse-dot rounded-full bg-line-strong" />
-            </Tone>
+            <span className="block size-[5px] animate-pulse-dot rounded-full bg-line-strong" />
             {s}
           </li>
         ))}

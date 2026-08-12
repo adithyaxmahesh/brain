@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import type { ActivityEvent, Agent, Company, Opportunity } from '@/data/types';
 import { CATEGORY_LABELS } from '@/data/opportunities';
 import { companyById, companyName } from '@/data';
-import { clockTime, money, percent, signedPercent } from '@/lib/format';
+import { clockTime, money, percent } from '@/lib/format';
 import { cn } from '@/lib/utils';
 import { useApp } from '@/state/AppContext';
 import { Claim } from './Claim';
@@ -192,15 +192,5 @@ export function ActivityItem({ event }: { event: ActivityEvent }) {
         {event.level && <span className="chip">L{event.level}</span>}
       </span>
     </li>
-  );
-}
-
-/* ── AlertRow ────────────────────────────────────────────────────────────── */
-
-export function GrowthCell({ value }: { value: number }) {
-  return (
-    <span className={cn('tnum text-base', value < 0 ? 'text-risk' : 'text-ink')}>
-      {signedPercent(value)}
-    </span>
   );
 }

@@ -38,7 +38,7 @@ export function CommandBar({
   const activeToken = useMemo(() => {
     const match = value.match(/(^|\s)([@/])([\w'-]*)$/);
     if (!match) return null;
-    return { trigger: match[2] as '@' | '/', term: match[3].toLowerCase(), atStart: value.trim().startsWith('/') };
+    return { trigger: match[2] as '@' | '/', term: match[3].toLowerCase() };
   }, [value]);
 
   const mentionMatches = useMemo(() => {

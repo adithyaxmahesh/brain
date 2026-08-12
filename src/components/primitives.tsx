@@ -96,18 +96,6 @@ export function Delta({
   );
 }
 
-export function Tone({
-  tone = 'neutral',
-  children,
-  className,
-}: {
-  tone?: 'good' | 'bad' | 'neutral';
-  children: ReactNode;
-  className?: string;
-}) {
-  return <span className={cn(TONE_TEXT[tone], className)}>{children}</span>;
-}
-
 /* ── Sparkline ───────────────────────────────────────────────────────────── */
 
 export function Sparkline({
@@ -183,28 +171,6 @@ export function ConfidenceMark({ confidence }: { confidence: Confidence }) {
 
 /* ── Layout helpers ──────────────────────────────────────────────────────── */
 
-export function SectionHeader({
-  title,
-  action,
-  description,
-  className,
-}: {
-  title: string;
-  action?: ReactNode;
-  description?: string;
-  className?: string;
-}) {
-  return (
-    <div className={cn('flex items-baseline justify-between gap-4', className)}>
-      <div>
-        <h2 className="eyebrow">{title}</h2>
-        {description && <p className="mt-1.5 max-w-prose text-sm text-muted">{description}</p>}
-      </div>
-      {action}
-    </div>
-  );
-}
-
 export function PageHeader({
   eyebrow,
   title,
@@ -225,45 +191,6 @@ export function PageHeader({
       </div>
       {right && <div className="flex items-center gap-2">{right}</div>}
     </header>
-  );
-}
-
-/** Big number with a small label above it — used sparingly, never as a card grid. */
-export function StatFigure({
-  label,
-  value,
-  sub,
-  onClick,
-  className,
-}: {
-  label: string;
-  value: ReactNode;
-  sub?: ReactNode;
-  onClick?: () => void;
-  className?: string;
-}) {
-  const Comp = onClick ? 'button' : 'div';
-  return (
-    <Comp
-      onClick={onClick}
-      data-focus-ring={onClick ? '' : undefined}
-      className={cn(
-        'block text-left',
-        onClick && 'group cursor-pointer rounded-sm transition-colors',
-        className,
-      )}
-    >
-      <div className="eyebrow">{label}</div>
-      <div
-        className={cn(
-          'tnum mt-1.5 text-2xl font-semibold tracking-[-0.02em]',
-          onClick && 'group-hover:text-accent',
-        )}
-      >
-        {value}
-      </div>
-      {sub && <div className="mt-1 text-sm text-muted">{sub}</div>}
-    </Comp>
   );
 }
 
